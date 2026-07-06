@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using BlazorShared;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

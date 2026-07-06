@@ -1,4 +1,4 @@
-using Microsoft.eShopWeb.Infrastructure.Identity;
+﻿using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
