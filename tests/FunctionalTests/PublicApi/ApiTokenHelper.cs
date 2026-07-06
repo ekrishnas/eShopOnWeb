@@ -1,7 +1,7 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.eShopWeb.ApplicationCore.Constants;
+using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.eShopWeb.FunctionalTests.Web.Api;
@@ -33,7 +33,7 @@ public class ApiTokenHelper
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
+        var key = Encoding.ASCII.GetBytes(JwtTokenKeyResolver.DevelopmentOnlyKey);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims.ToArray()),

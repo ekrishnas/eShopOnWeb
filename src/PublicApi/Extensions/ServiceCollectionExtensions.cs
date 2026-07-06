@@ -1,8 +1,7 @@
-﻿using System.Text;
+using System.Text;
 using BlazorShared;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.eShopWeb.ApplicationCore.Constants;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
@@ -29,9 +28,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
     }
 
-    public static void AddJwtAuthentication(this IServiceCollection services)
+    public static void AddJwtAuthentication(this IServiceCollection services, ConfigurationManager configuration, bool isDevelopment)
     {
-        var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
+        var signingKey = JwtTokenKeyResolver.Resolve(configuration, isDevelopment);
+        var key = Encoding.ASCII.GetBytes(signingKey);
 
         services.AddAuthentication(config =>
         {
