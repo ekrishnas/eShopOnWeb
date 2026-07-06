@@ -37,11 +37,11 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
+          # build-mode: none — CodeQL static C# analysis; no build step required
+          # (avoids failure on generated web assets like site.min.css not present in CI)
+          build-mode: none
           # CodeQL query suites: security-extended covers OWASP Top 10 + more
           queries: security-extended,security-and-quality
-
-      - name: Build for CodeQL
-        run: dotnet build ./eShopOnWeb.sln --configuration Release --no-incremental
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
