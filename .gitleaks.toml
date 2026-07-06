@@ -1,0 +1,16 @@
+title = "eShopOnWeb gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Intentional demo/dev values in this reference application"
+regexes = [
+  # Seeded demo password, displayed on the login page by design
+  '''Pass@word1''',
+  # Clearly-marked development-only JWT fallback (never used in Production)
+  '''DEVELOPMENT-ONLY-eShopOnWeb-signing-key''',
+  # Legacy hardcoded key from upstream — tracked as tech-debt #4; invalidated by config-based resolution
+  '''SecretKeyOfDoomThatMustBeAMinimumNumberOfBytes''',
+  '''AuthKeyOfDoomThatMustBeAMinimumNumberOfBytes''',
+]
