@@ -37,6 +37,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Configuration" Version="10.0.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.0-rc.1.25458.5" />
     <PackageVersion Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />

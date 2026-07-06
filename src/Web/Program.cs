@@ -49,6 +49,10 @@ if (!string.IsNullOrEmpty(gitHubClientId))
 }
 
 builder.Services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+
+// Fail fast at startup if JWT signing key is missing/invalid in this environment.
+JwtTokenKeyResolver.Resolve(builder.Configuration, builder.Environment.IsDevelopment());
+
 builder.Services.AddCoreServices(builder.Configuration);
 builder.Services.AddWebServices(builder.Configuration);
 

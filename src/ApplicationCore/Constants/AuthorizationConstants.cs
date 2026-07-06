@@ -4,9 +4,9 @@ public class AuthorizationConstants
 {
     public const string AUTH_KEY = "AuthKeyOfDoomThatMustBeAMinimumNumberOfBytes";
 
-    // TODO: Don't use this in production
+    // Intentional demo seed password, shown on the login page by design.
     public const string DEFAULT_PASSWORD = "Pass@word1";
 
-    // TODO: Change this to an environment variable
-    public const string JWT_SECRET_KEY = "SecretKeyOfDoomThatMustBeAMinimumNumberOfBytes";
+    // JWT signing key: resolved from configuration at runtime.
+    // See src/Infrastructure/Identity/JwtTokenKeyResolver.cs.
 }

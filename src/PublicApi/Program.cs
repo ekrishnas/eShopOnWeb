@@ -35,7 +35,7 @@ builder.Services.AddCustomServices(builder.Configuration);
 
 builder.Services.AddMemoryCache();
 
-builder.Services.AddJwtAuthentication();
+builder.Services.AddJwtAuthentication(builder.Configuration, builder.Environment.IsDevelopment());
 
 const string CORS_POLICY = "CorsPolicy";
 
