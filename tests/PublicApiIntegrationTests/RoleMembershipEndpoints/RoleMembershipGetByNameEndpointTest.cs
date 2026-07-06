@@ -19,7 +19,7 @@ public class RoleMembershipGetByNameEndpointTest
         var roleMembersResponse = await roleList.Content.ReadAsStringAsync();
         var model = roleMembersResponse.FromJson<GetRoleMembershipResponse>();
         Assert.IsNotNull(model);
-        Assert.IsTrue(model.RoleMembers.Count > 0);
+        Assert.IsNotEmpty(model.RoleMembers);
     }
 
     [TestMethod]
@@ -32,6 +32,6 @@ public class RoleMembershipGetByNameEndpointTest
         var response = await getInvalidRoleNameMembership.Content.ReadAsStringAsync();
         var model = response.FromJson<GetRoleMembershipResponse>();
         Assert.IsNotNull(model);
-        Assert.AreEqual(0, model.RoleMembers.Count);
+        Assert.IsEmpty(model.RoleMembers);
     }
 }

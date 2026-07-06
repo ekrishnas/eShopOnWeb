@@ -39,6 +39,6 @@ public class RoleListEndpointTest
         var model = stringResponse.FromJson<RoleListResponse>();
         Assert.IsNotNull(model);
         Assert.IsNotNull(model.Roles);
-        Assert.IsTrue(model.Roles.Count > 0);
+        Assert.IsNotEmpty(model.Roles);
     }
 }

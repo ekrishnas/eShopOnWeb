@@ -19,7 +19,7 @@ public class UserGetRolesByIdEndpointTest
         var response = await client.GetAsync($"api/users/name/{userName}");
         var adminUserResponse = await response.Content.ReadAsStringAsync();
         var adminUser = adminUserResponse.FromJson<GetUserResponse>();
-        
+
         var getUserRoles = await client.GetAsync($"api/users/{adminUser!.User!.Id}/roles");
         getUserRoles.EnsureSuccessStatusCode();
 
@@ -27,7 +27,7 @@ public class UserGetRolesByIdEndpointTest
         var userRolesList = userRoles.FromJson<GetUserRolesResponse>();
         Assert.IsNotNull(userRolesList);
         Assert.IsNotNull(userRolesList.Roles);
-        Assert.IsTrue(userRolesList.Roles.Count > 0);
+        Assert.IsNotEmpty(userRolesList.Roles);
     }
 
     [TestMethod]

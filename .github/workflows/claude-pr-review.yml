@@ -1,0 +1,50 @@
+name: Claude PR Review
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
+  id-token: write
+
+jobs:
+  review:
+    if: github.event.pull_request.draft == false && github.actor != 'claude[bot]'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Anthropic credentials configured
+      id: keycheck
+      env:
+        API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      run: |
+        if [ -z "$API_KEY" ] && [ -z "$OAUTH_TOKEN" ]; then
+          echo "configured=false" >> "$GITHUB_OUTPUT"
+          echo "::notice::No ANTHROPIC_API_KEY / CLAUDE_CODE_OAUTH_TOKEN secret configured; AI review skipped."
+        else
+          echo "configured=true" >> "$GITHUB_OUTPUT"
+        fi
+    - uses: actions/checkout@v4
+      if: steps.keycheck.outputs.configured == 'true'
+      with:
+        fetch-depth: 0
+    - name: Run Claude review
+      if: steps.keycheck.outputs.configured == 'true'
+      uses: anthropics/claude-code-action@v1
+      with:
+        anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+        claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        prompt: |
+          REPO: ${{ github.repository }}
+          PR NUMBER: ${{ github.event.pull_request.number }}
+
+          Review this pull request using the checklist in
+          .claude/commands/code-review.md. Read the diff with
+          `gh pr diff ${{ github.event.pull_request.number }}`.
+          Post ONE consolidated review comment with
+          `gh pr comment ${{ github.event.pull_request.number }} --body-file <tmpfile>`.
+          You are advisory only: never approve, request changes, or merge.
+        allowed_tools: "Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Read,Grep,Glob"

@@ -1,0 +1,33 @@
+name: Format Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  format:
+    name: dotnet format
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          include-prerelease: true
+
+      - name: Restore dependencies
+        run: dotnet restore ./eShopOnWeb.sln
+
+      - name: Check formatting
+        # --verify-no-changes exits non-zero if any file would be reformatted,
+        # failing the build without actually modifying files.
+        # Rules come from .editorconfig at the repo root.
+        run: dotnet format ./eShopOnWeb.sln --verify-no-changes --verbosity diagnostic

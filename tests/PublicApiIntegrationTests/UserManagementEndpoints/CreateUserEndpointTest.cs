@@ -37,7 +37,7 @@ public class CreateUserEndpointTest
         var stringResponse = await response.Content.ReadAsStringAsync();
         var model = stringResponse.FromJson<CreateUserResponse>();
         Assert.IsNotNull(model);
-        Assert.IsTrue(!string.IsNullOrEmpty(model.UserId));
+        Assert.IsFalse(string.IsNullOrEmpty(model.UserId));
     }
 
 
