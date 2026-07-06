@@ -13,4 +13,6 @@ regexes = [
   # Legacy hardcoded key from upstream — tracked as tech-debt #4; invalidated by config-based resolution
   '''SecretKeyOfDoomThatMustBeAMinimumNumberOfBytes''',
   '''AuthKeyOfDoomThatMustBeAMinimumNumberOfBytes''',
+  # Sequential-digit placeholder used only in hook-testing docs — clearly fake, never a real credential
+  '''ghp_0123456789012345678901234567890123456789''',
 ]

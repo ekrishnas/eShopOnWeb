@@ -47,6 +47,6 @@ public class UserListEndpointTest
         var model = stringResponse.FromJson<UserListResponse>();
         Assert.IsNotNull(model);
         Assert.IsNotNull(model.Users);
-        Assert.IsTrue(model.Users.Count > 0);
+        Assert.IsNotEmpty(model.Users);
     }
 }

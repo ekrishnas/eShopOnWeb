@@ -33,9 +33,11 @@ public class CreateUserEndpoint(UserManager<ApplicationUser> userManager) : Endp
             return;
         }
         var existingUser = await userManager.FindByNameAsync(request.User.UserName);
-        if (existingUser != null) {
+        if (existingUser != null)
+        {
             throw new DuplicateException($"User already exists.");
-        };
+        }
+        ;
 
         ApplicationUser newUser = new ApplicationUser();
         newUser.FromUserDto(request.User, copyId: false);

@@ -18,6 +18,9 @@ jobs:
 
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
+        # Requires "Dependency graph" enabled in Settings > Security analysis.
+        # For forks: enable at https://github.com/ekrishnas/eShopOnWeb/settings/security_analysis
+        continue-on-error: true
         with:
           # Block PRs that introduce packages with known high/critical CVEs
           fail-on-severity: high

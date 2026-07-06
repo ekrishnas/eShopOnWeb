@@ -12,7 +12,7 @@ namespace BlazorAdmin.Pages.UserPage;
 public partial class List : BlazorComponent
 {
     [Microsoft.AspNetCore.Components.Inject]
-    public IUserManagementService UserManagementService{ get; set; }
+    public IUserManagementService UserManagementService { get; set; }
     [Microsoft.AspNetCore.Components.Inject]
     ILogger<List> Logger { get; set; }
     [Microsoft.AspNetCore.Components.Inject]
@@ -23,7 +23,7 @@ public partial class List : BlazorComponent
     private Create CreateComponent { get; set; }
     private Delete DeleteComponent { get; set; }
     private Edit EditComponent { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
