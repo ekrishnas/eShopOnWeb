@@ -1,0 +1,72 @@
+name: Package Watch (stale + vulnerable)
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+    - name: Restore
+      run: dotnet restore ./eShopOnWeb.sln
+    - name: Build report header
+      run: |
+        {
+          echo "# Weekly package watch — $(date -u +%F)"
+          echo ""
+          echo "Automated report: stale and vulnerable dependencies."
+          echo "Triage guidance: [docs/aidlc/AIDLC.md](docs/aidlc/AIDLC.md)"
+        } > report.md
+    - name: Outdated packages
+      run: |
+        {
+          echo ""
+          echo "## Outdated packages"
+          echo '```'
+          dotnet list ./eShopOnWeb.sln package --outdated || true
+          echo '```'
+        } >> report.md
+    - name: Vulnerable packages (incl. transitive)
+      run: |
+        {
+          echo ""
+          echo "## Vulnerable packages"
+          echo '```'
+          dotnet list ./eShopOnWeb.sln package --vulnerable --include-transitive || true
+          echo '```'
+        } >> report.md
+    - name: OSV-Scanner
+      run: |
+        curl -sSfL -o osv-scanner https://github.com/google/osv-scanner/releases/download/v2.0.2/osv-scanner_linux_amd64
+        chmod +x osv-scanner
+        {
+          echo ""
+          echo "## OSV-Scanner"
+          echo '```'
+          ./osv-scanner scan --recursive . || true
+          echo '```'
+        } >> report.md
+    - name: Open or update tracking issue
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --search "Weekly package watch in:title" --state open --json number --jq '.[0].number' || true)
+        if [ -n "$existing" ] && [ "$existing" != "null" ]; then
+          gh issue edit "$existing" --repo "$GITHUB_REPOSITORY" --body-file report.md
+          echo "Updated issue #$existing"
+        else
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "Weekly package watch: stale & vulnerable dependencies" \
+            --body-file report.md
+        fi
